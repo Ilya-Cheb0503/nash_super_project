@@ -1,0 +1,7 @@
+__pycache__*
+*.db
+*test*
+.env
+*.log
+statistic.txt
+vacancies_keys.json
