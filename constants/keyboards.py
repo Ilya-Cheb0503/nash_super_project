@@ -1,25 +1,41 @@
-admin_main_menu_keyboard = [
+main_menu_keyboard = [
     ['Ищу работу', 'region'],
     # ['Я студент', 'student'],
     ['О компании', 'about_company'],
-    # ['Частые вопросы', 'FQA'],
+    ['Частые вопросы', 'FQA'],
     ['Отправить анкету', 'user_data'],
     ['Контактная информация', 'contacts'],
-    ['Социальные сети', 'social_media'],
-    ['Панель администратора', 'admin_soft']
-]
+    # ['Социальные сети', 'social_media'],
+    ]
+
+user_main_menu_keyboard = main_menu_keyboard
+
+admin_main_menu_keyboard = main_menu_keyboard.copy()
+admin_main_menu_keyboard.append(['Панель администратора', 'admin_soft'])
+
+
+# admin_main_menu_keyboard = [
+#     ['Ищу работу', 'region'],
+#     # ['Я студент', 'student'],
+#     ['О компании', 'about_company'],
+#     # ['Частые вопросы', 'FQA'],
+#     ['Отправить анкету', 'user_data'],
+#     ['Контактная информация', 'contacts'],
+#     ['Социальные сети', 'social_media'],
+#     ['Панель администратора', 'admin_soft']
+# ]
 
 admin_options_keyboard = [["Рассылка"], ["Метрика"], ["Главное меню"]]
 
-user_main_menu_keyboard = [
-    ['Ищу работу', 'region'],
-    # ['Я студент', 'student'],
-    ['О компании', 'about_company'],
-    # ['Частые вопросы', 'FQA'],
-    ['Отправить анкету', 'user_data'],
-    ['Контактная информация', 'contacts'],
-    ['Социальные сети', 'social_media'],
-]
+# user_main_menu_keyboard = [
+#     ['Ищу работу', 'region'],
+#     # ['Я студент', 'student'],
+#     ['О компании', 'about_company'],
+#     # ['Частые вопросы', 'FQA'],
+#     ['Отправить анкету', 'user_data'],
+#     ['Контактная информация', 'contacts'],
+#     ['Социальные сети', 'social_media'],
+# ]
 
 vacancies_menu_keyboard = [
     ['Все вакансии'],
