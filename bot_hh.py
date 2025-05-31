@@ -25,7 +25,7 @@ from constants.vacancies_keys import (energy_vacancy_keys,
                                       power_request_translater,
                                       vacancy_request_translater,
                                       categories_vacancy_keys)
-from data_holder.data_science import data_inf, key_keeper
+from data_holder.data_science import data_inf, key_keeper, get_current_month
 from db_depart.bd_update import create_rename_and_delete
 from db_depart.new_module import get_vacancy_by_vacancy_id
 from db_depart.user_db import (creat_user_in_db, get_user_from_db,
@@ -316,6 +316,12 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = await get_user_from_db(user_id)
     if not user:
         await creat_user_in_db(user_id)
+
+        current_month = await get_current_month()
+
+        await key_keeper('year', current_month)
+
+
     
     keyboard = [
         ['Главное меню'],

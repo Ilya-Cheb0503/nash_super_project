@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 
 from pwd_generator import get_current_directory
 from settings import logging
@@ -13,7 +14,7 @@ async def load_vacancies_keys():
     vacancies_keys_path = project_folder + vacancies_keys_file
 
     if os.path.exists(vacancies_keys_path):
-        with open(vacancies_keys_path, "r") as file:
+        with open(vacancies_keys_path, "r", encoding='utf-8') as file:
             vacancies_keys = json.load(file)
             # logging.info("Уведомления успешно загружены.")
             return vacancies_keys
@@ -24,6 +25,20 @@ async def load_vacancies_keys():
         "keys_word": {},
         "categories": {},
         "replies": {},
+        "year": {
+            "Январь": 0,
+            "Февраль": 0,
+            "Март": 0,
+            "Апрель": 0,
+            "Май": 0,
+            "Июнь": 0,
+            "Июль": 0,
+            "Август": 0,
+            "Сентябрь": 0,
+            "Октябрь": 0,
+            "Ноябрь": 0,
+            "Декабрь": 0,
+        },
     }
 
     return stat_bank
@@ -35,10 +50,31 @@ async def save_vacancies_keys(vacancies_keys):
     project_folder = await get_current_directory()
     vacancies_keys_path = project_folder + vacancies_keys_file
 
-    with open(vacancies_keys_path, "w") as file:
-        json.dump(vacancies_keys, file, ensure_ascii=True, indent=4)
+    with open(vacancies_keys_path, "w", encoding='utf-8') as file:
+        json.dump(vacancies_keys, file, ensure_ascii=False, indent=4)
 
     # logging.info("Уведомления успешно сохранены.")
+
+
+async def get_current_month():
+
+    months_dict = {
+        1: "Январь",
+        2: "Февраль",
+        3: "Март",
+        4: "Апрель",
+        5: "Май",
+        6: "Июнь",
+        7: "Июль",
+        8: "Август",
+        9: "Сентябрь",
+        10: "Октябрь",
+        11: "Ноябрь",
+        12: "Декабрь",
+    }
+
+    current_month_number = datetime.now().month
+    return months_dict[current_month_number]
 
 
 async def key_keeper(parameter_name, parameter_value):
@@ -89,6 +125,7 @@ async def data_inf(update, context, admin_id):
     keys_answer = await stat_collector(stat_collections, "keys_word")
     categories_answer = await stat_collector(stat_collections, "categories")
     replies_answer = await stat_collector(stat_collections, "replies")
+    year_answer = stat_collections['year']
 
     if keys_answer:
         keys_stat = keys_answer + "\n\n"
@@ -102,6 +139,11 @@ async def data_inf(update, context, admin_id):
     replies_pref += replies_stat
 
     result_answer = f"{keys_pref}{categories_pref}{replies_pref}"
+
+    result_answer += '\nСтатистика по новым пользователям за год:\n'
+
+    for month, value in year_answer.items():
+        result_answer += f'{month}: {value}\n'
 
     project_folder = await get_current_directory()
 
