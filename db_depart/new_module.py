@@ -75,9 +75,9 @@ async def get_vacancies_by_key_word_module(key_word, user_region):
     try:
         for vac in results:
             vacancy_region_name = vac.region_name.lower() if vac.region_name else ''
-            vacancy_name = vac.vacancy_inf.get('Вакансия', '').lower() if vac.vacancy_inf.get('Вакансия') else ''
-            vacancy_req = vac.vacancy_inf.get('Требования', '').lower() if vac.vacancy_inf.get('Требования') else ''
-            vacancy_resp = vac.vacancy_inf.get('Обязанности', '').lower() if vac.vacancy_inf.get('Обязанности') else ''
+            vacancy_name = vac.vacancy_inf.get('Вакансия', '').lower()
+            vacancy_req = vac.vacancy_inf.get('Требования', '').lower()
+            vacancy_resp = vac.vacancy_inf.get('Обязанности', '').lower()
             if key_word.lower() in (vacancy_name or vacancy_req or vacancy_resp) and select_region_name in vacancy_region_name:
                 result_list.append(vac)
     except Exception as ex:
