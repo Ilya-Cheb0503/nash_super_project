@@ -5,53 +5,33 @@ from datetime import datetime
 from pwd_generator import get_current_directory
 from settings import logging
 
-vacancies_keys_file = "/data_holder/vacancies_keys.json"
+from constants.constants import stat_bank
 
 
-async def load_vacancies_keys():
+async def load_json_file(pattern_dict, file_path):
 
     project_folder = await get_current_directory()
-    vacancies_keys_path = project_folder + vacancies_keys_file
+    json_file_path = project_folder + file_path
 
-    if os.path.exists(vacancies_keys_path):
-        with open(vacancies_keys_path, "r", encoding='utf-8') as file:
-            vacancies_keys = json.load(file)
+    if os.path.exists(json_file_path):
+        with open(json_file_path, "r", encoding='utf-8') as file:
+            json_file = json.load(file)
             # logging.info("Уведомления успешно загружены.")
-            return vacancies_keys
+            return json_file
 
     logging.warning("Файл уведомлений не найден, возвращается пустой словарь.")
 
-    stat_bank = {
-        "keys_word": {},
-        "categories": {},
-        "replies": {},
-        "year": {
-            "Январь": 0,
-            "Февраль": 0,
-            "Март": 0,
-            "Апрель": 0,
-            "Май": 0,
-            "Июнь": 0,
-            "Июль": 0,
-            "Август": 0,
-            "Сентябрь": 0,
-            "Октябрь": 0,
-            "Ноябрь": 0,
-            "Декабрь": 0,
-        },
-    }
-
-    return stat_bank
+    return pattern_dict
 
 
-async def save_vacancies_keys(vacancies_keys):
+async def save_json_file(json_file, file_path):
     # logging.info("Сохранение уведомлений в файл.")
 
     project_folder = await get_current_directory()
-    vacancies_keys_path = project_folder + vacancies_keys_file
+    json_file_path = project_folder + file_path
 
-    with open(vacancies_keys_path, "w", encoding='utf-8') as file:
-        json.dump(vacancies_keys, file, ensure_ascii=False, indent=4)
+    with open(json_file_path, "w", encoding='utf-8') as file:
+        json.dump(json_file, file, ensure_ascii=False, indent=4)
 
     # logging.info("Уведомления успешно сохранены.")
 
@@ -78,7 +58,7 @@ async def get_current_month():
 
 
 async def key_keeper(parameter_name, parameter_value):
-    keys_bank = await load_vacancies_keys()
+    keys_bank = await load_json_file(pattern_dict=stat_bank, file_path='/data_holder/vacancies_keys.json')
 
     keys_words = keys_bank[parameter_name]
 
@@ -87,7 +67,12 @@ async def key_keeper(parameter_name, parameter_value):
     else:
         keys_bank[parameter_name][parameter_value] += 1
 
-    await save_vacancies_keys(keys_bank)
+    await save_json_file(json_file=keys_bank, file_path='/data_holder/vacancies_keys.json')
+
+
+async def change_json_file(json_file, key, value):
+    json_file[key] = value
+    return json_file
 
 
 async def stat_collector(info_bank, parameter):
@@ -120,7 +105,7 @@ async def data_inf(update, context, admin_id):
     )
     replies_stat = "На текущий момент нелья выделить ни одну из вакансий.\n\n"
 
-    stat_collections = await load_vacancies_keys()
+    stat_collections = await load_json_file(pattern_dict=stat_bank, file_path='/data_holder/vacancies_keys.json')
 
     keys_answer = await stat_collector(stat_collections, "keys_word")
     categories_answer = await stat_collector(stat_collections, "categories")
