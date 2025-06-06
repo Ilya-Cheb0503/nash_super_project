@@ -40,6 +40,7 @@ from functions.vacancies_getting import (get_all_company_vacancies,
                                          get_vacancies_by_key_word,
                                          get_vacancies_by_keys_list,)
 from settings import logging
+from handlers.text_editor import router
 
 
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -369,6 +370,8 @@ async def main(telegram_bot_token) -> None:
     nest_asyncio.apply()
 
     application = Application.builder().token(telegram_bot_token).build()
+
+    application.include_router(router)
 
     # Регистрируем обработчики команд и сообщений
     application.add_handler(CommandHandler('start', start))
